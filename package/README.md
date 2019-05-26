@@ -10,6 +10,35 @@
 npm install el-bigdata-table -S
 ```
 
+## webpack.base.conf.js 添加配置（必须）
+``` javascript
+const path = require('path')
+const utils = require('./utils')
+const config = require('../config')
+const vueLoaderConfig = require('./vue-loader.conf')
+// 此处添加配置
+const fs = require('fs')
+
+function resolve (dir) {
+  return path.join(__dirname, '..', dir)
+}
+
+//此处添加配置
+let DirsName = fs.readdirSync(resolve('node_modules')).filter(dirName => /el-bigdata-table/.test(dirName))
+const includesDir = DirsName.map(dir => resolve(`node_modules/${dir}/`))
+
+module.exports = {
+  context: path.resolve(__dirname, '../')
+  ...
+  // 此处添加 babel-loader 配置 ...includesDir
+  {
+    test: /.js$/,
+    loader: 'babel-loader',
+    include: [resolve('src'), resolve('test'), resolve('node_modules/webpack-dev-server/client'), ...includesDir]
+  },
+  ...
+```
+
 ## Quick Start
 ``` javascript
 import 'el-bigdata-table'

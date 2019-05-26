@@ -3,12 +3,16 @@ const path = require('path')
 const utils = require('./utils')
 const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf')
+// 此处为添加的配置
+const fs = require('fs')
 
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
 
-
+//此处为添加的配置
+let DirsName = fs.readdirSync(resolve('node_modules')).filter(dirName => /el-bigdata-table/.test(dirName))
+const includesDir = DirsName.map(dir => resolve(`node_modules/${dir}/`))
 
 module.exports = {
   context: path.resolve(__dirname, '../'),
@@ -39,7 +43,7 @@ module.exports = {
       {
         test: /\.js$/,
         loader: 'babel-loader',
-        include: [resolve('src'), resolve('test'), resolve('node_modules/webpack-dev-server/client'), resolve('package/')]
+        include: [resolve('src'), resolve('test'), resolve('node_modules/webpack-dev-server/client'), ...includesDir]
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
