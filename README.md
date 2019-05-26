@@ -41,6 +41,7 @@ module.exports = {
 
 ## Quick Start
 ``` javascript
+// main.js
 import 'el-bigdata-table'
 ```
 
