@@ -39,8 +39,13 @@ Table.components.TableBody = {
     getRowClass (row, rowIndex) {
       let classes = ElTableBody.methods.getRowClass.call(this, row, rowIndex)
 
-      if (ElementUiVersion >= 2.8 && this.table.isUseVirtual && rowIndex === this.store.states.hoverRow) {
-        classes.push('hover-row')
+      if (this.table.isUseVirtual && rowIndex === this.store.states.hoverRow) {
+        // 兼容element-ui低版本
+        if (ElementUiVersion >= 2.8 && Object.prototype.toString.call(classes) === '[object Array]') {
+          classes.push('hover-row')
+        } else {
+          classes += ' hover-row'
+        }
       }
 
       return classes
